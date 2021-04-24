@@ -1,0 +1,20 @@
+body {
+  text-align: center;
+}
+
+div {
+  margin: 4em auto;
+}
+
+.you {
+  position: absolute;
+  margin: 0;
+  font-size: 0.8em;
+}
+
+.text {
+  width: 400px;
+  line-height: 1.5;
+  text-align: left;
+  white-space: pre-wrap;
+}
