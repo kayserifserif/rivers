@@ -3,10 +3,11 @@ const spaceTemp = document.createElement("span");
 spaceTemp.innerHTML = " ";
 spaceTemp.classList.add("space");
 const step = 2;
-const stepFall = 0.5;
+const speed = 0.5;
 const delay = 50;
 const em = parseFloat(getComputedStyle(document.body).fontSize);
 const youWidth = em * 0.5 * 0.8;
+let riverWidth = 1;
 
 // elements
 const you = document.getElementById("you");
@@ -14,7 +15,7 @@ const text = document.getElementById("text");
 
 // initial position
 you.style.left = window.innerWidth * 0.5 + "px";
-you.style.top = 9 * em + "px";
+you.style.top = 10 * em + "px";
 
 // break up text
 let ps = [];
@@ -107,7 +108,7 @@ function moveTo(targetLeft, targetTop) {
 const fall = () => {
 
   let targetLeft = you.offsetLeft;
-  let targetTop = you.offsetTop + stepFall;
+  let targetTop = you.offsetTop + speed;
 
   if (targetTop >= text.offsetTop + text.offsetHeight) {
     clearInterval(interval);
@@ -125,8 +126,11 @@ const fall = () => {
     moveTo(targetLeft, targetTop);
   } else if (targetSpan.classList.contains("space")) {
     moveTo(targetLeft, targetTop);
-    targetSpan.parentNode.insertBefore(spaceTemp.cloneNode(true), targetSpan);
+    for (let i = 0; i < Math.floor(riverWidth); i++) {
+      targetSpan.parentNode.insertBefore(spaceTemp.cloneNode(true), targetSpan);
+    }
     window.scrollBy(0, 2);
+    riverWidth += 0.1;
   }
 
 };
