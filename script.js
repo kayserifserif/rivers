@@ -7,7 +7,7 @@ const speed = 0.5;
 const delay = 50;
 const em = parseFloat(getComputedStyle(document.body).fontSize);
 const youWidth = em * 0.5 * 0.8;
-const scroll = 10;
+const scroll = 15;
 let riverWidth = 1;
 
 // touch
