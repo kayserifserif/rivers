@@ -9,6 +9,10 @@ const em = parseFloat(getComputedStyle(document.body).fontSize);
 const youWidth = em * 0.5 * 0.8;
 let riverWidth = 1;
 
+// touch
+let startX = 0;
+let dist = 0;
+
 // elements
 const you = document.getElementById("you");
 const text = document.getElementById("text");
@@ -68,6 +72,54 @@ const handleKeyDown = (e) => {
 };
 document.addEventListener("keydown", handleKeyDown);
 
+// http://www.javascriptkit.com/javatutors/touchevents.shtml
+function handleTouchStart(e) {
+  e.preventDefault();
+  let touchObj = e.changedTouches[0];
+  startX = parseInt(touchObj.clientX);
+}
+document.addEventListener("touchstart", handleTouchStart);
+
+function handleTouchMove(e) {
+  e.preventDefault();
+  let touchObj = e.changedTouches[0];
+  dist = parseInt(touchObj.clientX) - startX;
+  startX = parseInt(touchObj.clientX);
+
+  let targetLeft = parseInt(you.style.left);
+  let targetTop = parseInt(you.style.top);
+
+  let key;
+  if (dist < 0) {
+    key = "ArrowLeft";
+  } else if (dist > 0) {
+    key = "ArrowRight";
+  } else {
+    return false;
+  }
+
+  if (key == "ArrowLeft") {
+    if (targetLeft < text.offsetLeft) return false;
+    targetLeft -= step;
+  } else if (key == "ArrowRight") {
+    if (targetLeft + youWidth > text.offsetLeft + text.offsetWidth) return false;
+    targetLeft += step;
+  }
+
+  let targetSpan = getTargetSpan(targetLeft, targetTop, key);
+  if (!targetSpan) {
+    moveTo(targetLeft, targetTop);
+  } else if (targetSpan.classList.contains("space")) {
+    moveTo(targetLeft, targetTop);
+    targetSpan.parentNode.insertBefore(spaceTemp.cloneNode(true), targetSpan);
+  }
+}
+document.addEventListener("touchmove", handleTouchMove);
+
+function handleTouchEnd(e) {
+  e.preventDefault();
+}
+
 function getTargetSpan(targetLeft, targetTop, key) {
   // don't run into words
   for (let span of spans) {
@@ -113,6 +165,9 @@ const fall = () => {
   if (targetTop >= text.offsetTop + text.offsetHeight) {
     clearInterval(interval);
     document.removeEventListener("keydown", handleKeyDown);
+    document.removeEventListener("touchstart", handleTouchStart);
+    document.removeEventListener("touchmove", handleTouchMove);
+    document.removeEventListener("touchend", handleTouchEnd);
     window.scrollTo({
       top: document.body.scrollHeight,
       left: 0,
