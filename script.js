@@ -78,7 +78,7 @@ function handleTouchStart(e) {
   let touchObj = e.changedTouches[0];
   startX = parseInt(touchObj.clientX);
 }
-document.addEventListener("touchstart", handleTouchStart);
+document.addEventListener("touchstart", handleTouchStart, {passive: false});
 
 function handleTouchMove(e) {
   e.preventDefault();
@@ -114,11 +114,12 @@ function handleTouchMove(e) {
     targetSpan.parentNode.insertBefore(spaceTemp.cloneNode(true), targetSpan);
   }
 }
-document.addEventListener("touchmove", handleTouchMove);
+document.addEventListener("touchmove", handleTouchMove, {passive: false});
 
 function handleTouchEnd(e) {
   e.preventDefault();
 }
+document.addEventListener("touchend", handleTouchEnd, {passive: false});
 
 function getTargetSpan(targetLeft, targetTop, key) {
   // don't run into words
