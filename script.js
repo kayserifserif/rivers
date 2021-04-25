@@ -7,6 +7,7 @@ const speed = 0.5;
 const delay = 50;
 const em = parseFloat(getComputedStyle(document.body).fontSize);
 const youWidth = em * 0.5 * 0.8;
+const scroll = 5;
 let riverWidth = 1;
 
 // touch
@@ -185,7 +186,7 @@ const fall = () => {
     for (let i = 0; i < Math.floor(riverWidth); i++) {
       targetSpan.parentNode.insertBefore(spaceTemp.cloneNode(true), targetSpan);
     }
-    window.scrollBy(0, 2);
+    window.scrollBy(0, scroll);
     riverWidth += 0.1;
   }
 
