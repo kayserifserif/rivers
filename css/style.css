@@ -1,0 +1,115 @@
+@font-face {
+  font-family: Fraunces;
+  src: url("../fonts/Fraunces-Light.ttf");
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: Fraunces;
+  src: url("../fonts/Fraunces-LightItalic.ttf");
+  font-style: italic;
+  font-weight: 300;
+}
+
+* {
+  box-sizing: border-box;
+  --secondary: #999;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+  display: flex;
+  align-content: center;
+}
+
+body {
+  /* text-align: center; */
+  font-family: Fraunces, serif;
+  font-weight: 300;
+  /* font-weight: 400; */
+  width: 40em;
+  margin: auto;
+  font-size: 28px;
+  transition: 1s ease-in-out font-size;
+  /* display: flex; */
+  /* flex-direction: column; */
+}
+
+.birdseye {
+  /* width: 400px; */
+  /* font-size: ; */
+  font-size: 6px;
+}
+
+h1 {
+  /* font-size: 1rem; */
+  font-weight: 300;
+  /* font-size: 4em; */
+  /* font-weight: 400; */
+  font-style: italic;
+}
+
+header,
+main,
+footer {
+  margin: 4em auto;
+  max-width: 85%;
+  /* text-align: left; */
+  /* width: 400px; */
+}
+
+footer,
+footer a,
+small,h1 {
+  color: var(--secondary);
+}
+
+.you {
+  position: absolute;
+  margin: 0;
+  width: max-content;
+  font-size: 0.5em;
+  text-align: center;
+}
+
+.text {
+  /* width: 400px; */
+  /* max-width: 85%; */
+  line-height: 1.5;
+  text-align: left;
+  white-space: pre-wrap;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: flex-start;
+}
+
+button {
+  font-family: Fraunces, serif;
+  font-size: 0.8em;
+  background: none;
+  border: 0.5px solid currentColor;
+  border-radius: 5px;
+  padding: 2px 4px;
+  cursor: pointer;
+  color: var(--secondary);
+}
+
+button:hover {
+  background-color: rgba(0, 0, 0, 0.01);
+}
+
+.hidden {
+  display: none;
+}
+

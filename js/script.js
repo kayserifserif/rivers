@@ -1,49 +1,59 @@
+// elements
+const you = document.getElementById("you");
+const text = document.getElementById("text");
+// const viewButtons = document.getElementsByClassName("view-button")
+const viewButtons = document.querySelectorAll(".view-button");
+const resetButton = document.querySelector(".reset-button");
+let spans;
+
 // constants
 const spaceTemp = document.createElement("span");
 spaceTemp.innerHTML = " ";
 spaceTemp.classList.add("space");
-const step = 2;
-const speed = 0.5;
-const delay = 50;
 const em = parseFloat(getComputedStyle(document.body).fontSize);
-const youWidth = em * 0.5 * 0.8;
-const scroll = 15;
+// const step = 2;
+const step = em * 0.125;
+// const speed = 0.5;
+const speed = em * 0.03125;
+// const delay = 50;
+// const delay = em * 3.125;
+const delay = 800 / em;
+const youSize = parseFloat(getComputedStyle(you).fontSize)
+const youWidth = youSize * 0.5;
+// const scroll = 15;
+const scroll = em * 0.5;
 let riverWidth = 1;
 
 // touch
 let startX = 0;
 let dist = 0;
 
-// elements
-const you = document.getElementById("you");
-const text = document.getElementById("text");
+function init() {
+  // initial position
+  you.style.left = window.innerWidth * 0.5 + "px";
+  you.style.top = 10 * em + "px";
+  // you.style.top = window.innerHeight * 0.5 - 10 * em + "px";
 
-// initial position
-you.style.left = window.innerWidth * 0.5 + "px";
-you.style.top = 10 * em + "px";
-
-// break up text
-let ps = [];
-for (let para of text.getElementsByTagName("p")) {
-  let p = document.createElement("p");
-  for (let word of para.innerText.split(" ")) {
-    let span = document.createElement("span");
-    span.innerText = word;
-    span.classList.add("word");
-    p.appendChild(span);
-    p.appendChild(spaceTemp.cloneNode(true));
+  // break up text
+  let ps = [];
+  for (let para of text.getElementsByTagName("p")) {
+    let p = document.createElement("p");
+    for (let word of para.innerText.split(" ")) {
+      let span = document.createElement("span");
+      span.innerText = word;
+      span.classList.add("word");
+      p.appendChild(span);
+      p.appendChild(spaceTemp.cloneNode(true));
+    }
+    ps.push(p.outerHTML);
   }
-  ps.push(p.outerHTML);
+  text.innerHTML = ps.join("");
+  spans = text.getElementsByTagName("span");
 }
-text.innerHTML = ps.join("");
-let spans = text.getElementsByTagName("span");
+init();
 
 // controls
 const handleKeyDown = (e) => {
-
-  if (e.key == "ArrowUp" || e.key == "ArrowDown") {
-    e.preventDefault();
-  }
 
   if (e.key == "ArrowLeft" || e.key == "ArrowRight") {
 
@@ -192,3 +202,21 @@ const fall = () => {
 
 };
 const interval = setInterval(fall, delay);
+
+// view buttons
+viewButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    viewButtons.forEach(b => b.classList.toggle("hidden"))
+    document.body.classList.toggle("birdseye")
+  })
+})
+
+// reset button
+resetButton.addEventListener("click", () => {
+  init();
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: "smooth"
+  })
+})
