@@ -88,7 +88,17 @@ button {
   color: var(--secondary);
 }
 
-.hidden {
-  display: none;
+.logo {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-bottom: -0.15em;
+  background-color: var(--secondary);
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-image: url("../img/monogram.svg");
 }
-
