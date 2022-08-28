@@ -12,6 +12,13 @@
   font-weight: 300;
 }
 
+@font-face {
+  font-family: Fraunces;
+  src: url("../fonts/Fraunces-Regular.ttf");
+  font-style: normal;
+  font-weight: 400;
+}
+
 * {
   box-sizing: border-box;
   --secondary: #999;
@@ -36,16 +43,15 @@ body {
   /* font-weight: 400; */
   width: 40em;
   margin: auto;
-  font-size: 28px;
-  transition: 1s ease-in-out font-size;
+  /* font-size: 28px; */
+  /* transition: 1s ease-in-out font-size; */
   /* display: flex; */
   /* flex-direction: column; */
 }
 
 .birdseye {
   /* width: 400px; */
-  /* font-size: ; */
-  font-size: 6px;
+  /* font-size: 6px; */
 }
 
 h1 {
@@ -71,7 +77,7 @@ small,h1 {
   color: var(--secondary);
 }
 
-.you {
+.asterisk {
   position: absolute;
   margin: 0;
   width: max-content;
@@ -87,27 +93,32 @@ small,h1 {
   white-space: pre-wrap;
 }
 
-.buttons {
+/* .buttons {
   display: flex;
   flex-direction: column;
   gap: 1em;
   align-items: flex-start;
-}
+} */
 
 button {
   font-family: Fraunces, serif;
-  font-size: 0.8em;
+  /* font-size: 0.8em; */
+  font-size: 1em;
+  font-weight: 400;
   background: none;
-  border: 0.5px solid currentColor;
-  border-radius: 5px;
-  padding: 2px 4px;
+  /* border: 0.5px solid currentColor; */
+  border: none;
+  /* border-radius: 5px; */
+  padding: 0;
+  text-decoration: underline;
+  /* padding: 2px 4px; */
   cursor: pointer;
   color: var(--secondary);
 }
 
-button:hover {
+/* button:hover {
   background-color: rgba(0, 0, 0, 0.01);
-}
+} */
 
 .hidden {
   display: none;

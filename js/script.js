@@ -1,44 +1,47 @@
 // elements
-const you = document.getElementById("you");
+const asterisk = document.getElementById("asterisk");
 const text = document.getElementById("text");
-// const viewButtons = document.getElementsByClassName("view-button")
-const viewButtons = document.querySelectorAll(".view-button");
 const resetButton = document.querySelector(".reset-button");
-let spans;
-
-// constants
 const spaceTemp = document.createElement("span");
 spaceTemp.innerHTML = " ";
 spaceTemp.classList.add("space");
-const em = parseFloat(getComputedStyle(document.body).fontSize);
-// const step = 2;
-const step = em * 0.125;
-// const speed = 0.5;
-const speed = em * 0.03125;
-// const delay = 50;
-// const delay = em * 3.125;
-const delay = 800 / em;
-const youSize = parseFloat(getComputedStyle(you).fontSize)
-const youWidth = youSize * 0.5;
-// const scroll = 15;
-const scroll = em * 0.5;
+let spans;
+
+// constants
+const STEP = 2; // amount moved by controls
+const SPEED = 0.5; // amount moved by falling
+const DELAY = 50; // interval of falling
+const EM = parseFloat(getComputedStyle(document.body).fontSize);
+const ASTERISK_SIZE = parseFloat(getComputedStyle(asterisk).fontSize)
+const ASTERISK_WIDTH = ASTERISK_SIZE * 0.5;
+const SCROLL = 15; // amount that the window scrolls by
+const RIVER_GROWTH = 0.1; // amount that the river grows by
+const FADE = 0.01; // amount that the asterisk 
+
+// river
 let riverWidth = 1;
 
 // touch
 let startX = 0;
 let dist = 0;
 
+// get paragraph texts before chopping it up
+let paraTexts = [];
+for (let p of text.getElementsByTagName("p")) {
+  paraTexts.push(p.innerText);
+}
+
 function init() {
   // initial position
-  you.style.left = window.innerWidth * 0.5 + "px";
-  you.style.top = 10 * em + "px";
-  // you.style.top = window.innerHeight * 0.5 - 10 * em + "px";
+  asterisk.style.left = window.innerWidth * 0.5 + "px";
+  asterisk.style.top = 12 * EM + "px";
+  asterisk.style.opacity = 1;
 
   // break up text
   let ps = [];
-  for (let para of text.getElementsByTagName("p")) {
+  for (let paraText of paraTexts) {
     let p = document.createElement("p");
-    for (let word of para.innerText.split(" ")) {
+    for (let word of paraText.split(" ")) {
       let span = document.createElement("span");
       span.innerText = word;
       span.classList.add("word");
@@ -49,39 +52,53 @@ function init() {
   }
   text.innerHTML = ps.join("");
   spans = text.getElementsByTagName("span");
+
+  // remove event listeners
+  document.removeEventListener("keydown", handleKeyDown);
+  document.removeEventListener("touchstart", handleTouchStart);
+  document.removeEventListener("touchmove", handleTouchMove);
+  document.removeEventListener("touchend", handleTouchEnd);
+
+  // add event listeners
+  document.addEventListener("keydown", handleKeyDown);
+  document.addEventListener("touchstart", handleTouchStart, {passive: false});
+  document.addEventListener("touchmove", handleTouchMove, {passive: false});
+  document.addEventListener("touchend", handleTouchEnd, {passive: false});
 }
 init();
 
 // controls
-const handleKeyDown = (e) => {
+function handleKeyDown(e) {
 
   if (e.key == "ArrowLeft" || e.key == "ArrowRight") {
 
     e.preventDefault();
 
     // https://www.fwait.com/how-to-move-an-object-with-arrow-keys-in-javascript/
-    let targetLeft = parseInt(you.style.left);
-    let targetTop = parseInt(you.style.top);
+    let targetLeft = parseInt(asterisk.style.left);
+    let targetTop = parseInt(asterisk.style.top);
     
     if (e.key == "ArrowLeft") {
       if (targetLeft < text.offsetLeft) return false;
-      targetLeft -= step;
+      targetLeft -= STEP;
     } else if (e.key == "ArrowRight") {
-      if (targetLeft + youWidth > text.offsetLeft + text.offsetWidth) return false;
-      targetLeft += step;
+      if (targetLeft + ASTERISK_WIDTH > text.offsetLeft + text.offsetWidth) return false;
+      targetLeft += STEP;
     }
 
     let targetSpan = getTargetSpan(targetLeft, targetTop, e.key);
+    // can't fall if there's a word in the way
     if (!targetSpan) {
+      // free to move
       moveTo(targetLeft, targetTop);
     } else if (targetSpan.classList.contains("space")) {
+      // free to move and also insert space
       moveTo(targetLeft, targetTop);
       targetSpan.parentNode.insertBefore(spaceTemp.cloneNode(true), targetSpan);
     }
 
   }
-};
-document.addEventListener("keydown", handleKeyDown);
+}
 
 // http://www.javascriptkit.com/javatutors/touchevents.shtml
 function handleTouchStart(e) {
@@ -89,7 +106,6 @@ function handleTouchStart(e) {
   let touchObj = e.changedTouches[0];
   startX = parseInt(touchObj.clientX);
 }
-document.addEventListener("touchstart", handleTouchStart, {passive: false});
 
 function handleTouchMove(e) {
   e.preventDefault();
@@ -97,8 +113,8 @@ function handleTouchMove(e) {
   dist = parseInt(touchObj.clientX) - startX;
   startX = parseInt(touchObj.clientX);
 
-  let targetLeft = parseInt(you.style.left);
-  let targetTop = parseInt(you.style.top);
+  let targetLeft = parseInt(asterisk.style.left);
+  let targetTop = parseInt(asterisk.style.top);
 
   let key;
   if (dist < 0) {
@@ -111,26 +127,27 @@ function handleTouchMove(e) {
 
   if (key == "ArrowLeft") {
     if (targetLeft < text.offsetLeft) return false;
-    targetLeft -= step;
+    targetLeft -= STEP;
   } else if (key == "ArrowRight") {
-    if (targetLeft + youWidth > text.offsetLeft + text.offsetWidth) return false;
-    targetLeft += step;
+    if (targetLeft + ASTERISK_WIDTH > text.offsetLeft + text.offsetWidth) return false;
+    targetLeft += STEP;
   }
 
   let targetSpan = getTargetSpan(targetLeft, targetTop, key);
+  // can't fall if there's a word in the way
   if (!targetSpan) {
+    // free to move
     moveTo(targetLeft, targetTop);
   } else if (targetSpan.classList.contains("space")) {
+    // free to move and also insert space
     moveTo(targetLeft, targetTop);
     targetSpan.parentNode.insertBefore(spaceTemp.cloneNode(true), targetSpan);
   }
 }
-document.addEventListener("touchmove", handleTouchMove, {passive: false});
 
 function handleTouchEnd(e) {
   e.preventDefault();
 }
-document.addEventListener("touchend", handleTouchEnd, {passive: false});
 
 function getTargetSpan(targetLeft, targetTop, key) {
   // don't run into words
@@ -138,23 +155,23 @@ function getTargetSpan(targetLeft, targetTop, key) {
     let spanLeft = span.offsetLeft;
     let spanTop = span.offsetTop;
     let spanWidth = span.offsetWidth;
-    if (spanTop <= targetTop && spanTop + step >= targetTop) {
+    if (spanTop <= targetTop && spanTop + STEP >= targetTop) {
       switch (key) {
         case "ArrowLeft":
           if (spanLeft <= targetLeft && spanLeft + spanWidth >= targetLeft &&
-              spanTop <= targetTop && spanTop + step >= targetTop) {
+              spanTop <= targetTop && spanTop + STEP >= targetTop) {
             return span;
           }
           break;
         case "ArrowRight":
-          if (spanLeft <= targetLeft + youWidth &&
-              spanLeft + spanWidth >= targetLeft + youWidth) {
+          if (spanLeft <= targetLeft + ASTERISK_WIDTH &&
+              spanLeft + spanWidth >= targetLeft + ASTERISK_WIDTH) {
             return span;
           }
           break;
         case "ArrowDown":
           if (spanLeft - 3 <= targetLeft &&
-              spanLeft + spanWidth + 3 >= targetLeft + youWidth) {
+              spanLeft + spanWidth + 3 >= targetLeft + ASTERISK_WIDTH) {
             return span;
           }
           break;
@@ -165,26 +182,22 @@ function getTargetSpan(targetLeft, targetTop, key) {
 }
 
 function moveTo(targetLeft, targetTop) {
-  you.style.left = targetLeft + "px";
-  you.style.top = targetTop + "px";
+  asterisk.style.left = targetLeft + "px";
+  asterisk.style.top = targetTop + "px";
+  // asterisk.style.left = targetLeft + "em";
+  // asterisk.style.top = targetTop + "em";
 }
 
-const fall = () => {
+function fall() {
 
-  let targetLeft = you.offsetLeft;
-  let targetTop = you.offsetTop + speed;
+  let targetLeft = asterisk.offsetLeft;
+  let targetTop = asterisk.offsetTop + SPEED;
 
   if (targetTop >= text.offsetTop + text.offsetHeight) {
-    clearInterval(interval);
-    document.removeEventListener("keydown", handleKeyDown);
-    document.removeEventListener("touchstart", handleTouchStart);
-    document.removeEventListener("touchmove", handleTouchMove);
-    document.removeEventListener("touchend", handleTouchEnd);
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      left: 0,
-      behavior: "smooth"
-    })
+    let opacity = parseFloat(getComputedStyle(asterisk).opacity);
+    opacity -= FADE;
+    asterisk.style.opacity = opacity;
+    moveTo(targetLeft, targetTop)
     return;
   }
 
@@ -196,20 +209,12 @@ const fall = () => {
     for (let i = 0; i < Math.floor(riverWidth); i++) {
       targetSpan.parentNode.insertBefore(spaceTemp.cloneNode(true), targetSpan);
     }
-    window.scrollBy(0, scroll);
-    riverWidth += 0.1;
+    window.scrollBy(0, SCROLL);
+    riverWidth += RIVER_GROWTH;
   }
 
-};
-const interval = setInterval(fall, delay);
-
-// view buttons
-viewButtons.forEach(button => {
-  button.addEventListener("click", () => {
-    viewButtons.forEach(b => b.classList.toggle("hidden"))
-    document.body.classList.toggle("birdseye")
-  })
-})
+}
+const interval = setInterval(fall, DELAY);
 
 // reset button
 resetButton.addEventListener("click", () => {
