@@ -37,7 +37,8 @@ html {
 body {
   font-family: Fraunces, serif;
   font-weight: 300;
-  width: 40em;
+  width: 100%;
+  max-width: 40em;
   margin: auto;
   line-height: 1.5;
 }
@@ -58,6 +59,10 @@ header,
 footer,
 footer a {
   color: var(--secondary);
+}
+
+header small {
+  font-size: 0.8em;
 }
 
 kbd {

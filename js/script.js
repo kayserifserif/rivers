@@ -14,7 +14,7 @@ const DELAY = 50; // interval of falling
 const EM = parseFloat(getComputedStyle(document.body).fontSize);
 const ASTERISK_SIZE = parseFloat(getComputedStyle(asterisk).fontSize)
 const ASTERISK_WIDTH = ASTERISK_SIZE * 0.5;
-const SCROLL = 15; // amount that the window scrolls by
+const SCROLL = 10; // amount that the window scrolls by
 const RIVER_GROWTH = 0.1; // amount that the river grows by
 const FADE = 0.01; // amount that the asterisk 
 
@@ -102,13 +102,13 @@ function handleKeyDown(e) {
 
 // http://www.javascriptkit.com/javatutors/touchevents.shtml
 function handleTouchStart(e) {
-  e.preventDefault();
+  // e.preventDefault();
   let touchObj = e.changedTouches[0];
   startX = parseInt(touchObj.clientX);
 }
 
 function handleTouchMove(e) {
-  e.preventDefault();
+  // e.preventDefault();
   let touchObj = e.changedTouches[0];
   dist = parseInt(touchObj.clientX) - startX;
   startX = parseInt(touchObj.clientX);
@@ -146,7 +146,7 @@ function handleTouchMove(e) {
 }
 
 function handleTouchEnd(e) {
-  e.preventDefault();
+  // e.preventDefault();
 }
 
 function getTargetSpan(targetLeft, targetTop, key) {
