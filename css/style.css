@@ -32,33 +32,18 @@ body {
 
 html {
   height: 100%;
-  display: flex;
-  align-content: center;
 }
 
 body {
-  /* text-align: center; */
   font-family: Fraunces, serif;
   font-weight: 300;
-  /* font-weight: 400; */
   width: 40em;
   margin: auto;
-  /* font-size: 28px; */
-  /* transition: 1s ease-in-out font-size; */
-  /* display: flex; */
-  /* flex-direction: column; */
-}
-
-.birdseye {
-  /* width: 400px; */
-  /* font-size: 6px; */
+  line-height: 1.5;
 }
 
 h1 {
-  /* font-size: 1rem; */
   font-weight: 300;
-  /* font-size: 4em; */
-  /* font-weight: 400; */
   font-style: italic;
 }
 
@@ -67,58 +52,41 @@ main,
 footer {
   margin: 4em auto;
   max-width: 85%;
-  /* text-align: left; */
-  /* width: 400px; */
 }
 
+header,
 footer,
-footer a,
-small,h1 {
+footer a {
   color: var(--secondary);
+}
+
+kbd {
+  font-family: Fraunces, serif;
+  font-variant: small-caps;
+  letter-spacing: 0.2px;
 }
 
 .asterisk {
   position: absolute;
-  margin: 0;
-  width: max-content;
   font-size: 0.5em;
-  text-align: center;
 }
 
 .text {
-  /* width: 400px; */
-  /* max-width: 85%; */
-  line-height: 1.5;
   text-align: left;
   white-space: pre-wrap;
 }
 
-/* .buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  align-items: flex-start;
-} */
-
 button {
   font-family: Fraunces, serif;
-  /* font-size: 0.8em; */
   font-size: 1em;
   font-weight: 400;
   background: none;
-  /* border: 0.5px solid currentColor; */
   border: none;
-  /* border-radius: 5px; */
   padding: 0;
   text-decoration: underline;
-  /* padding: 2px 4px; */
   cursor: pointer;
   color: var(--secondary);
 }
-
-/* button:hover {
-  background-color: rgba(0, 0, 0, 0.01);
-} */
 
 .hidden {
   display: none;
