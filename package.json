@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "build": "rm -rf dist && mkdir dist && cp -R {index.html,favicon.svg,css,img,js,fonts} dist"
+  }
+}
